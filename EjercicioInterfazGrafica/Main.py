@@ -6,6 +6,8 @@ window = Tk()
 window.title("Ejercicio Interfaz Grafica")
 window.geometry("750x650")
 
+window.configure(bg='#525174')
+
 
 # messagebox
 
@@ -28,8 +30,8 @@ def delete_data():
     precioData = str(precio.get())
     generoData = genero.get()
     manga = nombreData + " " + precioData + " " + generoData + "\n"
-    if nombreData=="":
-        messagebox.showerror(message="Rellene el nombre del manga que desea borrar",title="ERROR")
+    if nombreData == "":
+        messagebox.showerror(message="Rellene el nombre del manga que desea borrar", title="ERROR")
         pass
     else:
         newFile = open("manga.txt", "r")
@@ -53,7 +55,7 @@ def modify_data():
     generoData = genero.get()
     manga = nombreData + " " + precioData + " " + generoData + "\n"
 
-    if nombreData=="":
+    if nombreData == "":
         messagebox.showerror(message="Rellene el nombre del manga que desea modificar", title="ERROR")
         pass
     else:
@@ -73,19 +75,28 @@ def modify_data():
 
 
 # -------------------------TREEVIEW--------------------------------------
-arbol = ttk.Treeview(window, columns=("precio", "genero"))
+estilo = ttk.Style()
+
+estilo.configure("mystyle.Treeview", highlightthickness=0,bd=0, font=('Lucida Console', 9))
+
+arbol = ttk.Treeview(window, columns=("precio", "genero"),style="mystyle.Treeview")
 arbol.heading("#0", text="Titulo")
 arbol.heading("precio", text="Precio")
 arbol.heading("genero", text="Género")
 arbol.place(x=65, y=40)
 
+
 # ---------------------------LABELS---------------------------------------
-nombreLabel = Label(text="Nombre Manga")
+nombreLabel = Label(text="Nombre Manga", font=('Helvetica', 10))
 nombreLabel.place(x=65, y=300)
-precioLabel = Label(text="Precio Manga")
+nombreLabel.configure(bg="#FCD3DE",foreground="#000000")
+precioLabel = Label(text="Precio Manga", font=('Helvetica', 10))
 precioLabel.place(x=65, y=350)
-generoLabel = Label(text="Genero Manga")
+precioLabel.configure(bg="#FCD3DE",foreground="#000000")
+generoLabel = Label(text="Genero Manga", font=('Helvetica', 10))
 generoLabel.place(x=65, y=400)
+generoLabel.configure(bg="#FCD3DE",foreground="#000000")
+
 
 # ---------------------------ENTRYS---------------------------------------
 nombre = StringVar()
@@ -97,19 +108,25 @@ precioEntry = Entry(textvariable=precio, width=77)
 generoEntry = Entry(textvariable=genero, width=77)
 
 nombreEntry.place(x=200, y=300)
+nombreEntry.configure(bg="#FCD3DE",foreground="#000000")
+
 precioEntry.place(x=200, y=350)
+precioEntry.configure(bg="#FCD3DE",foreground="#000000")
+
 generoEntry.place(x=200, y=400)
+generoEntry.configure(bg="#FCD3DE",foreground="#000000")
+
 
 # ---------------------------BUTTONS---------------------------------------
-crearBtn = Button(window, text="CREAR", command=send_data, width="84", height="1",
-                  bg="#757474", borderwidth=5, activebackground="#757474")
+crearBtn = Button(window, text="CREAR", command=send_data, width="74", height="1",
+                  bg="#72A1E5", borderwidth=3,foreground="#000000", font=('Helvetica', 10))
 crearBtn.place(x=65, y=450)
 
-borrarBtn = Button(window, text="BORRAR", command=delete_data, width="84", height="1",
-                   bg="#757474", borderwidth=5, activebackground="#757474")
+borrarBtn = Button(window, text="BORRAR", command=delete_data, width="74", height="1",
+                   bg="#72A1E5", borderwidth=3,foreground="#000000", font=('Helvetica', 10))
 borrarBtn.place(x=65, y=500)
 
-modificarBtn = Button(window, text="MODIFICAR", command=modify_data, width="84", height="1",
-                      bg="#757474", borderwidth=5, activebackground="#757474")
+modificarBtn = Button(window, text="MODIFICAR", command=modify_data, width="74", height="1",
+                      bg="#72A1E5", borderwidth=3,foreground="#000000", font=('Helvetica', 10))
 modificarBtn.place(x=65, y=550)
 window.mainloop()
