@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 window = Tk()
 window.title("Ejercicio Interfaz Grafica")
@@ -27,19 +28,23 @@ def delete_data():
     precioData = str(precio.get())
     generoData = genero.get()
     manga = nombreData + " " + precioData + " " + generoData + "\n"
+    if nombreData=="":
+        messagebox.showerror(message="Rellene el nombre del manga que desea borrar",title="ERROR")
+        pass
+    else:
+        newFile = open("manga.txt", "r")
+        lineas = newFile.readlines()
+        newFile.close()
 
-    newFile = open("manga.txt", "r")
-    lineas = newFile.readlines()
-    newFile.close()
+        newFile = open("manga.txt", "w")
+        for linea in lineas:
+            if linea != manga:
+                newFile.write(linea)
+        newFile.close()
 
-    newFile = open("manga.txt", "w")
-    for linea in lineas:
-        if linea != manga:
-            newFile.write(linea)
-    newFile.close()
-
-    selected_item = arbol.selection()[0]
-    arbol.delete(selected_item)
+        print(arbol.selection()[0])
+        selected_item = arbol.selection()[0]
+        arbol.delete(selected_item)
 
 
 def modify_data():
@@ -47,20 +52,24 @@ def modify_data():
     precioData = str(precio.get())
     generoData = genero.get()
     manga = nombreData + " " + precioData + " " + generoData + "\n"
-    selected_item = arbol.selection()[0]
-    arbol.item(selected_item, text=nombreData, values=(precioData, generoData))
 
-    newFile = open("manga.txt", "r")
-    lineas = newFile.readlines()
-    newFile.close()
+    if nombreData=="":
+        messagebox.showerror(message="Rellene el nombre del manga que desea modificar", title="ERROR")
+        pass
+    else:
+        selected_item = arbol.selection()[0]
+        arbol.item(selected_item, text=nombreData, values=(precioData, generoData))
+        newFile = open("manga.txt", "r")
+        lineas = newFile.readlines()
+        newFile.close()
 
-    newFile = open("manga.txt", "w+")
-    for linea in lineas:
-        if nombreData in linea:
-            newFile.write(manga)
-        else:
-            newFile.write(linea)
-    newFile.close()
+        newFile = open("manga.txt", "w+")
+        for linea in lineas:
+            if nombreData in linea:
+                newFile.write(manga)
+            else:
+                newFile.write(linea)
+        newFile.close()
 
 
 # -------------------------TREEVIEW--------------------------------------
