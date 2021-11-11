@@ -4,7 +4,9 @@ from tkinter import ttk
 window = Tk()
 window.title("Ejercicio Interfaz Grafica")
 window.geometry("750x650")
-#messagebox
+
+
+# messagebox
 
 # -------------------------FUNCIONES--------------------------------------
 def send_data():
@@ -13,10 +15,10 @@ def send_data():
     generoData = genero.get()
     manga = nombreData + " " + precioData + " " + generoData + "\n"
 
+    arbol.insert("", END, text=nombreData, values=(precioData, generoData))
+
     newFile = open("manga.txt", "a")
-
     newFile.write(manga)
-
     newFile.close()
 
 
@@ -36,17 +38,29 @@ def delete_data():
             newFile.write(linea)
     newFile.close()
 
+    selected_item = arbol.selection()[0]
+    arbol.delete(selected_item)
+
 
 def modify_data():
     nombreData = nombre.get()
     precioData = str(precio.get())
     generoData = genero.get()
+    manga = nombreData + " " + precioData + " " + generoData + "\n"
+    selected_item = arbol.selection()[0]
+    arbol.item(selected_item, text=nombreData, values=(precioData, generoData))
 
-    newFile = open("manga.txt", "w")
+    newFile = open("manga.txt", "r")
+    lineas = newFile.readlines()
+    newFile.close()
 
-    newFile.write(nombreData)
-    newFile.write(precioData)
-    newFile.write(generoData)
+    newFile = open("manga.txt", "w+")
+    for linea in lineas:
+        if nombreData in linea:
+            newFile.write(manga)
+        else:
+            newFile.write(linea)
+    newFile.close()
 
 
 # -------------------------TREEVIEW--------------------------------------
@@ -54,8 +68,6 @@ arbol = ttk.Treeview(window, columns=("precio", "genero"))
 arbol.heading("#0", text="Titulo")
 arbol.heading("precio", text="Precio")
 arbol.heading("genero", text="Género")
-menu1 = arbol.insert("", END, text="One Piece", values=("1000", "shonen"))
-menu2 = arbol.insert("", END, text="Dragon Ball", values=("88", "shonen"))
 arbol.place(x=65, y=40)
 
 # ---------------------------LABELS---------------------------------------
@@ -85,10 +97,10 @@ crearBtn = Button(window, text="CREAR", command=send_data, width="84", height="1
 crearBtn.place(x=65, y=450)
 
 borrarBtn = Button(window, text="BORRAR", command=delete_data, width="84", height="1",
-                  bg="#757474", borderwidth=5, activebackground="#757474")
+                   bg="#757474", borderwidth=5, activebackground="#757474")
 borrarBtn.place(x=65, y=500)
 
-modificarBtn = Button(window, text="MODIFICAR", command=modify_data(), width="84", height="1",
-                  bg="#757474", borderwidth=5, activebackground="#757474")
+modificarBtn = Button(window, text="MODIFICAR", command=modify_data, width="84", height="1",
+                      bg="#757474", borderwidth=5, activebackground="#757474")
 modificarBtn.place(x=65, y=550)
 window.mainloop()
